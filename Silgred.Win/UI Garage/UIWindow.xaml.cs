@@ -176,7 +176,7 @@ namespace Silgred.Win.UI_Garage
         {
             _rcSocket.Connection.On<CursorInfo>("CursorChange", cursorInfo =>
             {
-               // cursorInfo.ImageBytes = cursorInfo.ImageBytes.Decompress();
+               cursorInfo.ImageBytes = cursorInfo.ImageBytes.Decompress();
                 if (cursorInfo != null)
                 {
                     if (cursorInfo.ImageBytes.Length > 0)
