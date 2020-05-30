@@ -150,10 +150,13 @@ namespace Silgred.Win.ViewModels
         public async void AcceptViewer(ScreenCastRequest request)
         {
             await Conductor.CasterSocket.SendCursorChange(CursorIconWatcher.GetCurrentCursor(),
-                new List<string> {request.ViewerID});
-            await Services.GetRequiredService<IScreenCaster>().BeginScreenCasting(request);
-            LobbyViewers.Remove(request);
-            StartSession?.Invoke();
+                new List<string> {request.ViewerID}).ConfigureAwait(false);
+            await Services.GetRequiredService<IScreenCaster>().BeginScreenCasting(request).ConfigureAwait(false);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                LobbyViewers.Remove(request);
+                StartSession?.Invoke();
+            });  
         }
 
         public async void DismissViewer(ScreenCastRequest request)
