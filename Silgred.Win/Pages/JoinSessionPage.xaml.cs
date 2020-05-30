@@ -18,24 +18,30 @@ namespace Silgred.Win.Pages
     public partial class JoinSessionPage
     {
         private IRCSocket _rcSocket;
+        private bool _isBusy;
 
         public JoinSessionPage()
         {
             InitializeComponent();
             _rcSocket = (IRCSocket) ServiceContainer.Instance.GetService(typeof(IRCSocket));
+            _isBusy = false;
         }
 
         private async void JoinSessionBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            var sessionId = Regex.Replace(SessionIdTxtBox.Text, @"\s+", "");
-            var name = NameTxtBox.Text;
-            if (string.IsNullOrEmpty(sessionId) || string.IsNullOrEmpty(name)) return;
-            await _rcSocket.SendScreenCastRequestToDevice(sessionId, name, (int) RemoteControlMode.Normal);
-            var config = Config.GetConfig();
-            config.Name = name;
-            config.Save();
+            if (!_isBusy)
+            {
+                _isBusy = true;
+                var sessionId = Regex.Replace(SessionIdTxtBox.Text, @"\s+", "");
+                var name = NameTxtBox.Text;
+                if (string.IsNullOrEmpty(sessionId) || string.IsNullOrEmpty(name)) return;
+                await _rcSocket.SendScreenCastRequestToDevice(sessionId, name, (int)RemoteControlMode.Normal);
+                var config = Config.GetConfig();
+                config.Name = name;
+                config.Save();
 
-            OnMachineNameReceived();
+                OnMachineNameReceived();
+            }
         }
 
         private void OnMachineNameReceived()
@@ -50,6 +56,7 @@ namespace Silgred.Win.Pages
                     meetingWindow.Show();
 
                     if (window != null) window.Visibility = Visibility.Collapsed;
+                    _isBusy = false;
                 }
                 catch (Exception ex)
                 {

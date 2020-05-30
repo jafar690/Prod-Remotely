@@ -121,7 +121,7 @@ namespace Silgred.Win.Services
         }
         public async Task SendAudioSample(byte[] buffer)
         {
-            await Connection.SendAsync("SendAudioSample", buffer.Compress());
+            await Connection.SendAsync("SendAudioSample", buffer);
         }
 
         private void OnConnectionFailed()
