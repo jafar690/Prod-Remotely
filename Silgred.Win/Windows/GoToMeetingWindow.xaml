@@ -1,0 +1,247 @@
+﻿<Window x:Class="Silgred.Win.Windows.GoToMeetingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Silgred.Win.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Closed="GoToMeetingWindow_OnClosed"
+        ResizeMode="CanResizeWithGrip"
+        WindowState="Maximized"
+        Loaded="GoToMeetingWindow_OnLoaded"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="GoToMeetingWindow" Height="450" Width="800">
+    <Grid Background="#EDF2F7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            LastChildFill="False"
+            Background="#2D3748">
+            <Button
+                DockPanel.Dock="Left"
+                Background="Transparent"
+                Padding="0"
+                BorderThickness="0"
+                BorderBrush="Transparent"
+                Name="HomeButton"
+                Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Kind="Home"
+                        Height="20" Width="20"
+                        Foreground="White" />
+                    <TextBlock
+                        Text="Home"
+                        Foreground="White"
+                        Margin="5,0,0,0" />
+                </StackPanel>
+            </Button>
+
+        </DockPanel>
+
+        <Image
+            Grid.Row="1"
+            Grid.Column="1"
+            Source="../Assets/bckg.png"
+            Stretch="Fill" />
+
+
+        <DockPanel
+            Background="White"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="0">
+            <Border
+                Margin="0,10,0,10"
+                Background="#F7FAFC"
+                DockPanel.Dock="Bottom"
+                BorderBrush="#CBD5E0"
+                CornerRadius="0"
+                BorderThickness="1">
+                <DockPanel>
+                    <Button
+                        DockPanel.Dock="Right"
+                        x:Name="SendMessageBtn"
+                        Click="SendMessageBtn_OnClick"
+                        IsDefault="True"
+                        Padding="0"
+                        Margin="3"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        VerticalAlignment="Bottom">
+                        <materialDesign:PackIcon
+                            Kind="Send"
+                            Foreground="Black" />
+                    </Button>
+                    <TextBox
+                        DockPanel.Dock="Left"
+                        Padding="3"
+                        LostFocus="MessageTxtBox_OnLostFocus"
+                        GotFocus="MessageTxtBox_OnGotFocus"
+                        TextWrapping="Wrap"
+                        Name="MessageTxtBox"
+                        BorderBrush="Transparent"
+                        FontStyle="Normal"
+                        Text="Type a message" />
+                </DockPanel>
+            </Border>
+            <ItemsControl
+                VerticalAlignment="Stretch"
+                ItemsSource="{Binding Chats}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Name="Panel" Margin="0,3,0,3">
+                            <Border
+                                CornerRadius="5"
+                                Background="#757575">
+                                <StackPanel Margin="8">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Text="{Binding Name}"
+                                            Foreground="#bdbdbd" />
+                                        <TextBlock
+                                            Margin="20,0,0,0"
+                                            Foreground="#bdbdbd"
+                                            Text="{Binding TimeDisplay}" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        Text="{Binding Message}"
+                                        Foreground="White"
+                                        TextWrapping="WrapWithOverflow" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding ChatType}" Value="Sender">
+                                <Setter TargetName="Panel" Property="HorizontalAlignment" Value="Left" />
+                                <Setter TargetName="Panel" Property="Background" Value="#E2E8F0" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ChatType}" Value="Receiver">
+                                <Setter TargetName="Panel" Property="HorizontalAlignment" Value="Right" />
+                                <Setter TargetName="Panel" Property="Background" Value="#4A5568" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DockPanel>
+        <Grid
+            Name="ControlsGrid"
+            Margin="0,0,0,20"
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border
+                Background="#0A52AF"
+                BorderBrush="#707070"
+                x:Name="CircularBorder"
+                CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder}"
+                Width="{Binding Path=ActualHeight, ElementName=CircularBorder}"
+                BorderThickness="2">
+                <Button
+                    Padding="0"
+                    Name="BtnConnectAudio"
+                    Click="BtnConnectAudio_OnClick"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Margin="10"
+                    BorderBrush="Transparent">
+                    <materialDesign:PackIcon
+                        Name="MicController"
+                        Kind="Microphone"
+                        Foreground="White"
+                        Height="25" Width="25" />
+                </Button>
+            </Border>
+            <Border
+                Margin="10,0,0,0"
+                Grid.Column="1"
+                Background="#0A52AF"
+                BorderBrush="#707070"
+                x:Name="CircularBorder4"
+                CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder4}"
+                Width="{Binding Path=ActualHeight, ElementName=CircularBorder4}"
+                BorderThickness="2">
+                <Button
+                    Padding="0"
+                    Name="BtnConnectVideo"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    BorderBrush="Transparent">
+                    <materialDesign:PackIcon
+                        Kind="VideoOff"
+                        Foreground="White"
+                        Height="25" Width="25" />
+                </Button>
+            </Border>
+            <Border
+                Background="#0A52AF"
+                Grid.Column="2"
+                BorderBrush="#707070"
+                Margin="10,0,0,0"
+                x:Name="CircularBorder2"
+                CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder2}"
+                Width="{Binding Path=ActualHeight, ElementName=CircularBorder2}"
+                BorderThickness="2">
+                <Button
+
+                    Name="ChatBtn"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    BorderBrush="Transparent"
+                    Padding="0">
+                    <materialDesign:PackIcon
+                        Kind="Chat"
+                        HorizontalAlignment="Center"
+                        Foreground="White"
+                        Height="25" Width="25" />
+                </Button>
+            </Border>
+
+            <Border
+                Margin="10,0,0,0"
+                Grid.Column="3"
+                Background="#0A52AF"
+                BorderBrush="#707070"
+                x:Name="CircularBorder3"
+                CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder3}"
+                Width="{Binding Path=ActualHeight, ElementName=CircularBorder3}"
+                BorderThickness="2">
+                <Button
+                    Name="MembersBtn"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    BorderBrush="Transparent"
+                    Padding="0">
+                    <materialDesign:PackIcon
+                        Kind="People"
+                        HorizontalAlignment="Center"
+                        Foreground="White"
+                        Height="25" Width="25" />
+                </Button>
+            </Border>
+
+
+        </Grid>
+
+    </Grid>
+</Window>

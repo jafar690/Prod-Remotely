@@ -1,0 +1,206 @@
+﻿<Page x:Class="Silgred.Win.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Silgred.Win.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.Background>
+                <ImageBrush
+                    ImageSource="../Assets/settingsBackGround.png" />
+            </Grid.Background>
+
+            <StackPanel
+                Grid.Row="0"
+                Orientation="Horizontal"
+                Grid.Column="0">
+                <Button
+                    Name="BackButton"
+                    Click="BackButton_OnClick"
+                    BorderBrush="Transparent"
+                    Background="Transparent"
+                    Margin="10,0,0,0"
+                    Padding="0">
+                    <materialDesign:PackIcon
+                        Kind="ArrowBack"
+                        Foreground="White" />
+                </Button>
+                <TextBlock
+                    Text="Silgred"
+                    Foreground="White"
+                    FontFamily="Segoe UI"
+                    FontSize="12"
+                    Margin="10,8,0,0" />
+            </StackPanel>
+
+            <ListView
+                Name="SideBarListView"
+                SelectionChanged="SideBarListView_OnSelectionChanged"
+                Grid.Row="1"
+                Margin="0,40,0,0">
+                <ListView.Items>
+                    <DockPanel
+                        Opacity=".7"
+                        Name="Account"
+                        Margin="10,0,0,0">
+                        <materialDesign:PackIcon
+                            DockPanel.Dock="Left"
+                            Kind="Account"
+                            Style="{StaticResource SideBarIcons}" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Text="Account and Profile"
+                            Style="{StaticResource SideBarText}" />
+                    </DockPanel>
+
+                    <DockPanel
+                        Opacity=".7"
+                        Name="Theme"
+                        Margin="10,0,0,0">
+                        <materialDesign:PackIcon
+                            DockPanel.Dock="Left"
+                            Kind="PaintBrush"
+                            Style="{StaticResource SideBarIcons}" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Text="Theme"
+                            Style="{StaticResource SideBarText}" />
+                    </DockPanel>
+
+                    <DockPanel
+                        Opacity=".7"
+                        Name="Media"
+                        Margin="10,0,0,0">
+                        <materialDesign:PackIcon
+                            DockPanel.Dock="Left"
+                            Kind="Video"
+                            Style="{StaticResource SideBarIcons}" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Text="Audio and Video"
+                            Style="{StaticResource SideBarText}" />
+                    </DockPanel>
+
+                    <DockPanel
+                        Opacity=".7"
+                        Name="Help"
+                        Margin="10,0,0,0">
+                        <materialDesign:PackIcon
+                            DockPanel.Dock="Left"
+                            Kind="HelpCircle"
+                            Style="{StaticResource SideBarIcons}" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Text="Help and Feedback"
+                            Style="{StaticResource SideBarText}" />
+                    </DockPanel>
+
+                </ListView.Items>
+            </ListView>
+        </Grid>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            DockPanel.Dock="Top"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Name="MinimizeButton"
+                Click="MinimizeButton_OnClick"
+                BorderThickness="0">
+                <materialDesign:PackIcon
+                    Kind="WindowMinimize"
+                    Foreground="Black"
+                    FontWeight="Regular"
+                    Height="20" Width="20" />
+            </Button>
+            <Button
+                Name="CloseButton"
+                Click="CloseButton_OnClick"
+                Background="Transparent"
+                BorderThickness="0"
+                BorderBrush="Transparent">
+                <materialDesign:PackIcon
+                    Kind="WindowClose"
+                    Foreground="Black"
+                    Height="20" Width="20" />
+            </Button>
+        </StackPanel>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Margin="15"
+                Grid.Column="0"
+                Grid.Row="0">
+                <TextBlock
+                    Text="Server Host"
+                    Foreground="Black"
+                    FontSize="14" />
+                <Border
+                    Grid.Row="2"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="0"
+                    Margin="0,10,0,0">
+                    <DockPanel>
+                        <Button
+                            DockPanel.Dock="Right"
+                            Background="Transparent"
+                            Name="SaveHostBtn"
+                            Click="SaveHostBtn_OnClick"
+                            BorderBrush="Transparent"
+                            Padding="0"
+                            Margin="0,0,10,0">
+                            <materialDesign:PackIcon
+                                Kind="TickCircle"
+                                Height="25" Width="25"
+                                FontWeight="Bold"
+                                Foreground="#04DB57" />
+                        </Button>
+                        <TextBox
+                            GotFocus="HostNameTxtBox_OnGotFocus"
+                            LostFocus="HostNameTxtBox_OnLostFocus"
+                            Text="{Binding Config.Host, Mode=OneWay}"
+                            Foreground="Black"
+                            FontSize="16"
+                            x:Name="HostNameTxtBox"
+                            Margin="10,5,5,5"
+                            BorderBrush="Transparent" />
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,22 @@
+﻿using System.Linq;
+using System.Security.Cryptography;
+
+namespace Silgred.Shared.Services
+{
+    public class RandomGenerator
+    {
+        private const string allowableCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+        public string GenerateString(int length)
+        {
+            var bytes = new byte[length];
+
+            using (var random = RandomNumberGenerator.Create())
+            {
+                random.GetBytes(bytes);
+            }
+
+            return new string(bytes.Select(x => allowableCharacters[x % allowableCharacters.Length]).ToArray());
+        }
+    }
+}

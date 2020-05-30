@@ -1,0 +1,29 @@
+﻿<Window x:Class="Silgred.Win.Controls.SettingsPrompt"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Silgred.Win.Controls"
+        xmlns:viewModels="clr-namespace:Silgred.Win.ViewModels"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="SettingsPrompt" Height="350" Width="400">
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="40">
+        <TextBlock
+            Text="Choose Your Theme"
+            Style="{StaticResource TextBlockH2}" />
+        <ComboBox
+            x:Name="ThemeComboBox"
+            SelectedValue="{Binding Theme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValuePath="Content"
+            SelectionChanged="ThemeComboBox_OnSelectionChanged">
+            <ComboBoxItem Content="Default" />
+            <ComboBoxItem Content="Light" />
+            <ComboBoxItem Content="Dark" />
+            <ComboBoxItem Content="Custom" />
+        </ComboBox>
+    </StackPanel>
+</Window>

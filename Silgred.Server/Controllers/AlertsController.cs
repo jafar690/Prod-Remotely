@@ -1,0 +1,97 @@
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Silgred.Server.Services;
+using Silgred.Shared.Models;
+
+namespace Silgred.Server.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AlertsController : ControllerBase
+    {
+        public AlertsController(DataService dataService, IEmailSenderEx emailSender)
+        {
+            DataService = dataService;
+            EmailSender = emailSender;
+        }
+
+        private DataService DataService { get; }
+        private IEmailSenderEx EmailSender { get; }
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(AlertOptions alertOptions)
+        {
+            Request.Headers.TryGetValue("OrganizationID", out var orgID);
+
+            DataService.WriteEvent("Alert created.  Alert Options: " + JsonSerializer.Serialize(alertOptions), orgID);
+
+            if (alertOptions.ShouldAlert)
+                try
+                {
+                    await DataService.AddAlert(alertOptions, orgID);
+                }
+                catch (Exception ex)
+                {
+                    DataService.WriteEvent(ex, orgID);
+                }
+
+            if (alertOptions.ShouldEmail)
+                try
+                {
+                    await EmailSender.SendEmailAsync(alertOptions.EmailTo,
+                        alertOptions.EmailSubject,
+                        alertOptions.EmailBody,
+                        orgID);
+                }
+                catch (Exception ex)
+                {
+                    DataService.WriteEvent(ex, orgID);
+                }
+
+            if (alertOptions.ShouldSendApiRequest)
+                try
+                {
+                    var httpRequest = WebRequest.CreateHttp(alertOptions.ApiRequestUrl);
+                    httpRequest.Method = alertOptions.ApiRequestMethod;
+                    httpRequest.ContentType = "application/json";
+                    foreach (var header in alertOptions.ApiRequestHeaders)
+                        httpRequest.Headers.Add(header.Key, header.Value);
+                    using (var rs = httpRequest.GetRequestStream())
+                    using (var sw = new StreamWriter(rs))
+                    {
+                        sw.Write(alertOptions.ApiRequestBody);
+                    }
+
+                    var response = (HttpWebResponse) httpRequest.GetResponse();
+                    DataService.WriteEvent($"Alert API Response Status: {response.StatusCode}.", orgID);
+                }
+                catch (Exception ex)
+                {
+                    DataService.WriteEvent(ex, orgID);
+                }
+
+            return Ok();
+        }
+
+        [HttpDelete("Delete/{alertID}")]
+        public async Task<IActionResult> Delete(string alertID)
+        {
+            Request.Headers.TryGetValue("OrganizationID", out var orgID);
+
+            var alert = await DataService.GetAlert(alertID);
+
+            if (alert?.OrganizationID == orgID)
+            {
+                await DataService.DeleteAlert(alert);
+
+                return Ok();
+            }
+
+            return Unauthorized();
+        }
+    }
+}

@@ -1,0 +1,521 @@
+﻿<Page x:Class="Silgred.Win.Pages.StartSessionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:barcode="clr-namespace:Syncfusion.UI.Xaml.Controls.Barcode;assembly=Syncfusion.SfBarcode.WPF"
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+      xmlns:converters="clr-namespace:Silgred.Win.Helpers"
+      xmlns:system="clr-namespace:System;assembly=System.Runtime"
+      mc:Ignorable="d"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
+      Title="Silgred" Height="450" Width="800">
+    <Page.Resources>
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel
+            Style="{StaticResource SideBar}"
+            Grid.Row="0"
+            Orientation="Horizontal"
+            Grid.Column="0">
+            <Button
+                Name="BackButton"
+                Click="HomeBtn_OnClick"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                Margin="10,0,0,0"
+                Padding="0">
+                <materialDesign:PackIcon
+                    Kind="ArrowBack"
+                    Foreground="White" />
+            </Button>
+            <TextBlock
+                Text="Silgred"
+                Foreground="White"
+                FontFamily="Segoe UI"
+                FontSize="12"
+                Margin="10,8,0,0" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="0"
+            Style="{StaticResource SideBar}">
+            <DockPanel
+                Name="Settings"
+                MouseLeftButtonDown="Settings_OnMouseLeftButtonDown"
+                Margin="10,15,0,10">
+                <materialDesign:PackIcon
+                    DockPanel.Dock="Left"
+                    Kind="Settings"
+                    FontSize="12"
+                    Style="{StaticResource SideBarIcons}" />
+                <TextBlock
+                    DockPanel.Dock="Right"
+                    Text="Settings"
+                    FontSize="12"
+                    Style="{StaticResource SideBarText}" />
+            </DockPanel>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Style="{StaticResource SideBar}" />
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.RowSpan="2"
+            Margin="15,0,0,0">
+            <TextBlock
+                Text="Start Session"
+                FontSize="14"
+                FontWeight="SemiBold" />
+            <TextBlock
+                Text="Session Id"
+                FontSize="12"
+                Margin="0,30,0,0" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Name="SessionIdTxtBlock"
+                    Text="{Binding ViewModel.SessionId}"
+                    FontSize="14"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold" />
+                <Button
+                    Name="SessionIdCopy"
+                    Click="CopyIdBtn_OnClick"
+                    Margin="10,0,0,0"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Padding="0">
+                    <materialDesign:PackIcon
+                        VerticalAlignment="Top"
+                        Kind="ContentCopy"
+                        Height="20" Width="20" />
+                </Button>
+            </StackPanel>
+
+            <TextBlock
+                Text="Session Id"
+                FontSize="12"
+                Margin="0,20,0,0" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Text="h438h"
+                    FontSize="14"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold" />
+                <Button
+                    Name="SessionPasswordCopy"
+                    Margin="10,0,0,0"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Padding="0">
+                    <materialDesign:PackIcon
+                        VerticalAlignment="Top"
+                        Kind="ContentCopy"
+                        Height="20" Width="20" />
+                </Button>
+            </StackPanel>
+
+            <Border
+                Background="#d1e0f3"
+                CornerRadius="3"
+                HorizontalAlignment="Center"
+                Margin="0,30,0,0">
+                <StackPanel
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Name="SessionUrlTxtBox"
+                        FontSize="9"
+                        VerticalAlignment="Center"
+                        Margin="5,0,0,0"
+                        Text="{Binding ViewModel.SessionUrl}" />
+                    <Button
+                        Name="SessionUrlCopy"
+                        Click="CopyUrlBtn_OnClick"
+                        DockPanel.Dock="Right"
+                        Margin="15,0,5,0"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Padding="0">
+                        <materialDesign:PackIcon
+                            VerticalAlignment="Top"
+                            Kind="ContentCopy"
+                            Height="20" Width="20" />
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <barcode:SfBarcode
+                    Height="150" Width="150"
+                    x:Name="Barcode"
+                    HorizontalAlignment="Center"
+                    FontSize="14"
+                    TextBrush="Transparent"
+                    Text="{Binding ViewModel.SessionUrl}"
+                    Symbology="QRBarcode">
+                    <barcode:SfBarcode.SymbologySettings>
+                        <barcode:QRBarcodeSetting XDimension="8" />
+                    </barcode:SfBarcode.SymbologySettings>
+                </barcode:SfBarcode>
+                <StackPanel
+                    VerticalAlignment="Center"
+                    Grid.Column="1">
+                    <TextBlock
+                        FontSize="14"
+                        Text="Send QR Code Via Mail" />
+                    <Button
+                        Padding="0"
+                        Margin="0,8,0,0"
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        BorderBrush="Transparent">
+                        <TextBlock
+                            Text="Send Via Mail"
+                            Foreground="#0A52AF"
+                            FontWeight="Bold"
+                            FontSize="14" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <DockPanel LastChildFill="False">
+                <Border
+                    Background="#0078D7"
+                    Margin="0,0,20,10"
+                    DockPanel.Dock="Right">
+                    <Button
+                        Click="GoToMeetingButton_OnClick"
+                        IsEnabled="False"
+                        Name="GoToMeetingButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        BorderBrush="Transparent">
+                        <TextBlock
+                            Text="Go To Meeting"
+                            FontWeight="Regular"
+                            Foreground="White" />
+                    </Button>
+                </Border>
+            </DockPanel>
+        </StackPanel>
+
+        <Grid
+            Grid.Row="0"
+            Grid.Column="2"
+            Grid.RowSpan="3">
+            <Grid.Background>
+                <ImageBrush
+                    Stretch="UniformToFill"
+                    ImageSource="../Assets/background.png" />
+            </Grid.Background>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                DockPanel.Dock="Top"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Name="MinimizeButton"
+                    Click="MinimizeButton_OnClick"
+                    BorderThickness="0">
+                    <materialDesign:PackIcon
+                        Kind="WindowMinimize"
+                        Foreground="White"
+                        FontWeight="Regular"
+                        Height="20" Width="20" />
+                </Button>
+                <Button
+                    Name="CloseButton"
+                    Click="CloseButton_OnClick"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    BorderBrush="Transparent">
+                    <materialDesign:PackIcon
+                        Kind="WindowClose"
+                        Foreground="White"
+                        Height="20" Width="20" />
+                </Button>
+            </StackPanel>
+
+            <TextBlock
+                Name="LobbyViewerTitle"
+                Visibility="{Binding Path=ViewModel.LobbyViewers.Count,
+                Converter={StaticResource CountToVisibilityConverter}}"
+                Grid.Row="1"
+                FontWeight="SemiBold"
+                Foreground="White"
+                Margin="10,0,10,0"
+                FontSize="16"
+                Text="Lobby" />
+            <Separator
+                Name="LobbyViewerSeparator"
+                Visibility="{Binding Path=ViewModel.LobbyViewers.Count,
+                Converter={StaticResource CountToVisibilityConverter}}"
+                Grid.Row="2"
+                Height="2"
+                Background="White"
+                BorderThickness="0"
+                BorderBrush="Transparent"
+                Margin="10,10,10,0" />
+
+            <ScrollViewer
+                Visibility="{Binding Path=ViewModel.LobbyViewers.Count,
+                Converter={StaticResource CountToVisibilityConverter}}"
+                Grid.Row="3"
+                Name="LobbyViewerScrollView">
+                <ScrollViewer.Resources>
+                    <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">5</system:Double>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Background" Value="#F7FAFC" />
+                    </Style>
+                </ScrollViewer.Resources>
+                <ListView
+                    ItemsSource="{Binding ViewModel.LobbyViewers}"
+                    Name="LobbyListView">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="{Binding RequesterName}"
+                                    VerticalAlignment="Center"
+                                    Foreground="White" />
+                                <Button
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="5,0,10,0"
+                                    BorderThickness="0"
+                                    BorderBrush="Transparent"
+                                    Background="Red"
+                                    Name="DismissBtn"
+                                    Click="DismissBtn_OnClick"
+                                    Content="Dismiss"
+                                    Foreground="White"
+                                    HorizontalAlignment="Right" />
+                                <Button
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="10,0,10,0"
+                                    BorderThickness="0"
+                                    BorderBrush="Transparent"
+                                    Foreground="White"
+                                    Background="Green"
+                                    Name="AcceptButton"
+                                    Click="AcceptButton_OnClick"
+                                    Content="Allow"
+                                    HorizontalAlignment="Right" />
+                                <Separator
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    Height="1"
+                                    Opacity=".3"
+                                    HorizontalAlignment="Stretch"
+                                    Background="White" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+
+
+            <StackPanel
+                Grid.Row="4"
+                Margin="10,0,10,0"
+                Orientation="Horizontal">
+                <TextBlock
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    FontSize="16"
+                    Text="Joined Members" />
+                <TextBlock
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    FontSize="16"
+                    Margin="5,0,0,0"
+                    Text="(" />
+                <TextBlock
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    FontSize="16"
+                    Margin="0,0,0,0"
+                    Text="{Binding ViewModel.Viewers.Count}" />
+                <TextBlock
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    FontSize="16"
+                    Margin="0,0,0,0"
+                    Text=")" />
+
+            </StackPanel>
+
+            <Separator
+                Grid.Row="5"
+                Height="2"
+                Background="White"
+                BorderThickness="0"
+                BorderBrush="Transparent"
+                Margin="10,10,10,0" />
+
+
+            <ScrollViewer
+                Grid.Row="6">
+                <ScrollViewer.Resources>
+                    <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">5</system:Double>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Background" Value="#F7FAFC" />
+                    </Style>
+                </ScrollViewer.Resources>
+                <ListView
+                    ItemsSource="{Binding ViewModel.Viewers}"
+                    Name="ViewersListView">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="{Binding Name}"
+                                    VerticalAlignment="Center"
+                                    Foreground="White" />
+                                <CheckBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Foreground="White"
+                                    BorderBrush="White"
+                                    IsChecked="{Binding HasControl}" />
+                                <Button
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="10,0,0,0"
+                                    Padding="0"
+                                    HorizontalAlignment="Right"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent">
+                                    <materialDesign:PackIcon
+                                        Kind="MicrophoneOff"
+                                        Foreground="White"
+                                        Height="20" Width="20" />
+                                </Button>
+                                <Button
+                                    Grid.Row="0"
+                                    Grid.Column="3"
+                                    Margin="10,0,0,0"
+                                    Padding="0"
+                                    HorizontalAlignment="Right"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent">
+                                    <materialDesign:PackIcon
+                                        Kind="Video"
+                                        Foreground="White"
+                                        Height="20" Width="20" />
+                                </Button>
+                                <Separator
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="4"
+                                    Height="1"
+                                    Opacity=".3"
+                                    HorizontalAlignment="Stretch"
+                                    Background="White" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+
+            <Button
+                Grid.Row="7"
+                HorizontalAlignment="Right"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="0"
+                BorderBrush="Transparent"
+                Name="EndSessionBtn"
+                Margin="0,0,15,15">
+                <TextBlock
+                    Text="End Session"
+                    Foreground="#FF0000"
+                    FontWeight="Regular"
+                    FontSize="14" />
+            </Button>
+
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,311 @@
+﻿<Window x:Class="Silgred.Win.UI_Garage.UIWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        WindowState="Maximized"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        WindowStartupLocation="CenterScreen"
+        Loaded="MainWindow_Loaded"
+        Closed="UIWindow_OnClosed"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        xmlns:converters="clr-namespace:Silgred.Win.Helpers"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        Height="450" Width="800">
+
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid
+        Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Image
+            Grid.Column="1"
+            Name="ScreenImage"
+            Source="../Assets/bckg.png"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"/>
+        <Image
+            Grid.Column="1"
+            x:Name="CursorImage" />
+
+        <Border
+            Name="BorderControls"
+            MouseEnter="BorderControls_OnMouseEnter"
+            MouseLeave="BorderControls_OnMouseLeave"
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="0,0,0,40"
+            Background="Transparent"
+            CornerRadius="8"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom">
+            <Grid 
+                HorizontalAlignment="Center"
+                Name="GridControls"
+                Visibility="Visible"
+                Margin="5">
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="Button" x:Key="ButtonControls">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Padding" Value="10"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Style>
+                        <Style TargetType="Border" x:Key="BorderControls">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="Background" Value="#0A52AF"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="BorderBrush" Value="#707070"/>
+                        </Style>
+                        <Style TargetType="materialDesign:PackIcon" x:Key="PackIconControl">
+                            <Setter Property="Height" Value="25"/>
+                            <Setter Property="Width" Value="25"/>
+                        </Style>
+                    </ResourceDictionary>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Style="{StaticResource BorderControls}"
+                    x:Name="CircularBorder"
+                    CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder}"
+                    Width="{Binding Path=ActualHeight, ElementName=CircularBorder}">
+                    <Button
+                        Style="{StaticResource ButtonControls}"
+                        Click="BtnAudioConnect_Click"
+                        Name="BtnConnectAudio">
+                        <materialDesign:PackIcon
+                            Style="{StaticResource PackIconControl}"
+                            Name="MicController"
+                            Kind="Microphone"
+                            Foreground="White" />
+                    </Button>
+                </Border>
+
+                <Border
+                    Grid.Column="1"
+                    x:Name="CircularBorder1"
+                    CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder1}"
+                    Width="{Binding Path=ActualHeight, ElementName=CircularBorder1}"
+                    Style="{StaticResource BorderControls}">
+                    <Button
+                        Style="{StaticResource ButtonControls}"
+                        Name="BtnConnectVideo">
+                        <materialDesign:PackIcon
+                            Style="{StaticResource PackIconControl}"
+                            Kind="Video"
+                            Foreground="White" />
+                    </Button>
+                </Border>
+
+                <Border
+                    Grid.Column="2"
+                    x:Name="CircularBorder2"
+                    CornerRadius="{Binding Path=ActualHeight, ElementName=CircularBorder2}"
+                    Width="{Binding Path=ActualHeight, ElementName=CircularBorder2}"
+                    Style="{StaticResource BorderControls}">
+                    <Button
+                        Style="{StaticResource ButtonControls}"
+                        Name="ChatButton"
+                        Click="ChatButton_OnClick">
+                        <materialDesign:PackIcon
+                            Style="{StaticResource PackIconControl}"
+                            Kind="Chat"
+                            Foreground="White" />
+                    </Button>
+                </Border>
+
+
+
+            </Grid>
+        </Border>
+        <Grid
+            Background="#F7FAFC"
+            Grid.Column="0"
+            Visibility="Visible"
+            Name="SidePanel">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer
+                Margin="5"
+                Name="ChatScrollViewer">
+                <ScrollViewer.Resources>
+                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                    <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">2</system:Double>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Background" Value="#F7FAFC" />
+                    </Style>
+                </ScrollViewer.Resources>
+                <ListView
+                    IsHitTestVisible="False"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ItemsSource="{Binding Chats}"
+                    Name="MessageListView">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Name="ChatPanel" Margin="5">
+                                <Border Name="BorderChatPanel">
+                                    <StackPanel Margin="10">
+                                        <TextBlock
+                                            FontSize="12"
+                                            Name="ChatNameSender"
+                                            Text="{Binding Name}"/>
+                                        <TextBlock
+                                            Name="ChatMessage"
+                                            FontSize="14"
+                                            TextWrapping="Wrap"
+                                            Text="{Binding Message}"/>
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock
+                                    Text="{Binding TimeDisplay}"
+                                    FontSize="10"
+                                    Name="ChatTime"/>
+                            </StackPanel>
+
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding ChatType}" Value="Sender">
+                                    <Setter TargetName="ChatPanel" Property="HorizontalAlignment" Value="Left" />
+                                    <Setter TargetName="BorderChatPanel" Property="Background" Value="#E2E8F0"/>
+                                    <Setter TargetName="BorderChatPanel" Property="CornerRadius" Value="20,20,20,0"/>
+                                    <Setter TargetName="ChatTime" Property="HorizontalAlignment" Value="Left"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ChatType}" Value="Receiver">
+                                    <Setter TargetName="ChatPanel" Property="HorizontalAlignment" Value="Right" />
+                                    <Setter TargetName="BorderChatPanel" Property="Background" Value="#4A5568"/>
+                                    <Setter TargetName="BorderChatPanel" Property="CornerRadius" Value="20,20,0,20"/>
+                                    <Setter TargetName="ChatNameSender" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="ChatMessage" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="ChatTime" Property="HorizontalAlignment" Value="Right"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </ScrollViewer>
+
+            <Grid
+                Background="#EDF2F7"
+                Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border 
+                    Background="#F7FAFC"
+                    BorderThickness="1"
+                    BorderBrush="#CBD5E0"
+                    Margin="5"
+                    Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid VerticalAlignment="Bottom">
+                            <!-- overlay with hint text -->
+                            <TextBlock 
+                                Margin="5,2"
+                                MinWidth="50" 
+                                Text="Start Typing" 
+                                Foreground="#707070" 
+                                Visibility="{Binding ElementName=MessageTxtBox, Path=Text.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                            <!-- enter term here -->
+                            <TextBox 
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                MinWidth="50" 
+                                Margin="5,0,0,0"
+                                Name="MessageTxtBox" 
+                                Background="Transparent" TextWrapping="Wrap" CaretBrush="Transparent" />
+
+
+                        </Grid>
+
+                        <Button
+                            Margin="0,0,8,0"
+                            Grid.Row="0"
+                            Background="Transparent"
+                            Padding="0"
+                            Name="SendBtn"
+                            Click="SendBtn_OnClick"
+                            VerticalAlignment="Bottom"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Grid.Column="1">
+                            <TextBlock
+                                Text="Send"
+                                VerticalAlignment="Bottom"
+                                FontWeight="Normal"
+                                FontSize="12"
+                                Foreground="#1A202C"/>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <Grid
+                    Margin="0,0,0,30"
+                    Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Margin="5,0,0,0"
+                        Padding="0"
+                        BorderBrush="Transparent">
+                        <materialDesign:PackIcon
+                            Kind="AttachFile"
+                            Height="25" Width="25"
+                            Foreground="#1A202C" RenderTransformOrigin="0.5,0.5">
+                            <materialDesign:PackIcon.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="45"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </materialDesign:PackIcon.RenderTransform>
+                        </materialDesign:PackIcon>
+                    </Button>
+
+                    <Button
+                        Margin="5,0,0,0"
+                        Grid.Column="1"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        BorderBrush="Transparent">
+                        <materialDesign:PackIcon
+                            Kind="Crop"
+                            Height="20" Width="20"
+                            Foreground="#1A202C"/>
+                    </Button>
+
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Silgred.Win.UserControlFiles.UserControlJoinSession"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Silgred.Win"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1010">
+    <Grid Background="White" Margin="40,40,0,0">
+        <Grid Width="400" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Text="Session ID :"
+                FontSize="22"
+                FontWeight="Bold" />
+            <TextBox
+                x:Name="JoinSessionIDTxtBox"
+                HorizontalAlignment="Left"
+                Width="250" Margin="0,10,0,0"
+                Grid.Row="1"
+                IsReadOnly="True"
+                Text="354 787 908"
+                Foreground="Gray"
+                FontSize="22" />
+            <Button
+                Grid.Row="2"
+                Margin="20, 40,20,20">
+                Join Remote Session
+            </Button>
+        </Grid>
+        <Grid Width="400" HorizontalAlignment="Right" Margin="0,10,10,0" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Silgred_EventHookup</AssemblyName>
+    <RootNamespace>Silgred.Event.Hookup</RootNamespace>
+  </PropertyGroup>
+
+</Project>

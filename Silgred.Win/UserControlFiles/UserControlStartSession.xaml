@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="Silgred.Win.UserControlFiles.UserControlStartSession"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Silgred.Win.ViewModels"
+             xmlns:barcode="clr-namespace:Syncfusion.UI.Xaml.Controls.Barcode;assembly=Syncfusion.SfBarcode.WPF"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1010">
+    <UserControl.DataContext>
+        <viewModels:MainWindowViewModel />
+    </UserControl.DataContext>
+    <Grid Background="White" Margin="40,40,0,0">
+        <Grid>
+            <Grid Width="400" HorizontalAlignment="Left" Margin="10,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Text="Session ID :"
+                    FontSize="22"
+                    FontWeight="Bold" />
+                <TextBox
+                    x:Name="StartSessionIdTxtBox"
+                    HorizontalAlignment="Left"
+                    Width="250" Margin="0,10,0,0"
+                    Grid.Row="1"
+                    IsReadOnly="True"
+                    Text="{Binding SessionId}"
+                    Foreground="Gray"
+                    FontSize="22" />
+                <TextBlock
+                    Grid.Row="2"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Text="Scan QR Code"
+                    Margin="0,30,0,0" />
+                <barcode:SfBarcode
+                    Grid.Row="3"
+                    Height="300"
+                    Width="300"
+                    x:Name="Barcode"
+                    FontSize="14"
+                    TextBrush="Transparent"
+                    Text="{Binding SessionUrl}"
+                    Symbology="QRBarcode">
+                    <barcode:SfBarcode.SymbologySettings>
+                        <barcode:QRBarcodeSetting XDimension="8" />
+                    </barcode:SfBarcode.SymbologySettings>
+                </barcode:SfBarcode>
+                <Button
+                    Grid.Row="4"
+                    HorizontalAlignment="Center"
+                    Click="CopyLinkButton_Click"
+                    Content="Copy Url" />
+            </Grid>
+            <Grid Width="400" HorizontalAlignment="Right" Margin="0,10,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Text="Viewers"
+                    FontSize="22"
+                    FontWeight="Bold" />
+                <TextBlock
+                    Grid.Row="1"
+                    Text="Name"
+                    HorizontalAlignment="Left"
+                    Margin="0,20,0,0"
+                    FontSize="20" />
+                <TextBlock
+                    Grid.Row="1"
+                    Text="Has Control"
+                    TextAlignment="Right"
+                    Margin="0,20,20,0"
+                    FontSize="20" />
+                <ListBox
+                    x:Name="ViewerListBox"
+                    Height="350"
+                    Width="380"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    Grid.Row="2"
+                    HorizontalContentAlignment="Stretch"
+                    ItemsSource="{Binding Viewers}"
+                    SelectionMode="Extended">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <TextBlock Text="{Binding Name}" />
+                                <CheckBox
+                                    IsChecked="{Binding HasControl}" HorizontalAlignment="Right" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button
+                    Grid.Row="3"
+                    Margin="0,15,30,0"
+                    Command="{Binding RemoveViewersCommand}"
+                    CommandParameter="{Binding ElementName=ViewerListBox, Path=SelectedItems}"
+                    HorizontalAlignment="Right"
+                    Content="Remove" />
+            </Grid>
+        </Grid>
+        <Canvas />
+    </Grid>
+</UserControl>
